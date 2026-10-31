@@ -1,0 +1,66 @@
+int main() {
+    DoubleLinkedList list;
+    khoiTaoDanhSach(list);
+    string fileName = "data.csv";
+    docFileCSV(list, fileName);
+
+    int chon;
+    do {
+        cout << "\n=== HE THONG QUAN LY SINH VIEN (DT01) ===\n";
+        cout << "1. Xem danh sach sinh vien\n";
+        cout << "2. Them sinh vien moi\n";
+        cout << "3. Xoa sinh vien theo Ma\n";
+        cout << "4. Sap xep danh sach (QuickSort GPA)\n";
+        cout << "5. Loc Top 3 sinh vien diem cao nhat\n";
+        cout << "6. Luu du lieu (Ghi vao CSV)\n";
+        cout << "0. Thoat\n";
+        cout << "Nhap lua chon: ";
+        cin >> chon;
+
+        switch (chon) {
+            case 1:
+                hienThiDanhSach(list);
+                break;
+            case 2: {
+                SinhVien sv;
+                cout << "Nhap Ma SV: "; cin >> sv.maSV;
+                cin.ignore();
+                cout << "Nhap Ho Ten: "; getline(cin, sv.hoTen);
+                cout << "Nhap GPA: "; cin >> sv.diemGPA;
+                sv.xepLoai = phanLoaiHocLuc(sv.diemGPA);
+                themCuoi(list, sv);
+                cout << "Them thanh cong!\n";
+                break;
+            }
+            case 3: {
+                string ma;
+                cout << "Nhap Ma SV can xoa: "; cin >> ma;
+                xoaSinhVien(list, ma);
+                break;
+            }
+            case 4:
+                sapXepQuickSort(list);
+                hienThiDanhSach(list);
+                break;
+            case 5: {
+                sapXepQuickSort(list);
+                cout << "\n--- TOP 3 SINH VIEN XUAT SAC ---";
+                int count = 0;
+                DoubleLinkedList topList; khoiTaoDanhSach(topList);
+                for (Node* k = list.head; k != NULL && count < 3; k = k->next) {
+                    themCuoi(topList, k->data);
+                    count++;
+                }
+                hienThiDanhSach(topList);
+                giaiPhongDanhSach(topList);
+                break;
+            }
+            case 6:
+                ghiFileCSV(list, fileName);
+                break;
+        }
+    } while (chon != 0);
+
+    giaiPhongDanhSach(list);
+    return 0;
+}
